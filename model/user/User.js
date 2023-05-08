@@ -1,6 +1,8 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 const db = require("../../db");
+const Token = require("../oauth/token");
+const AuthorizationCode = require("../oauth/authorizationCode");
 
 const User = db.define("User", {
   login: {
@@ -14,7 +16,7 @@ const User = db.define("User", {
   alexaID: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 });
 
 User.beforeCreate(async (user) => {
@@ -26,8 +28,16 @@ User.prototype.validPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-(async () => {
-  await db.sync({ force: true });
-})();
+User.hasOne(Token, {
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  foreignKey: "user_id",
+});
+
+User.hasOne(AuthorizationCode, {
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  foreignKey: "user_id",
+});
 
 module.exports = User;

@@ -1,5 +1,4 @@
 const express = require("express");
-const { log } = require("node:console");
 const https = require('node:https');
 const router = express.Router();
 

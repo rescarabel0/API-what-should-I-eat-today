@@ -12,7 +12,7 @@ const UserDAO = {
     const user = await User.findOne({ where: { login } })
     if (await user.validPassword(password)) {
       const token = jwt.sign(
-        {user_id: user.isSoftDeleted, login},
+        {user_id: user.id, login},
         "TOKEN_KEY",
         {
           expiresIn: '2h'
