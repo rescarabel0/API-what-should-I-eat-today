@@ -1,5 +1,5 @@
 const User = require("../model/user/User");
-const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const UserDAO = {
   findByLogin: async (login) => {
@@ -11,7 +11,14 @@ const UserDAO = {
   login: async (login, password) => {
     const user = await User.findOne({ where: { login } })
     if (await user.validPassword(password)) {
-      return true
+      const token = jwt.sign(
+        {user_id: user.isSoftDeleted, login},
+        "TOKEN_KEY",
+        {
+          expiresIn: '2h'
+        }
+      )
+      return {login: user.login, token}
     }
     throw new Error("Incorrect login or password")
   },

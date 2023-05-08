@@ -15,9 +15,7 @@ router.post("/login", async (req, res) => {
   }
   try {
     const loggedIn = await UserDAO.login(body.login, body.password);
-    if (loggedIn)
-      res.sendStatus(200);
-    else throw new Error("Login or password is incorrect");
+    res.send(loggedIn);
   } catch (err) {
     res.status(404).send({ error: err.message });
   }
