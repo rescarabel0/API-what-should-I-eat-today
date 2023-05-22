@@ -12,11 +12,7 @@ const User = db.define("User", {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  alexaID: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
+  }
 });
 
 User.beforeCreate(async (user) => {

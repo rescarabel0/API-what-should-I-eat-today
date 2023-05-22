@@ -3,14 +3,14 @@ const https = require('node:https');
 const router = express.Router();
 
 router.get(['/recipe', '/recipe/'], (req, res) => {
-    https.get('https://api.spoonacular.com/recipes/complexSearch?number=1&includeIngredients=onion,tomato,pasta&addRecipeInformation=true&apiKey=be1c6811746943559cb24c21122b2899', _res => {
+    https.get('https://api.spoonacular.com/recipes/complexSearch?number=1&addRecipeInformation=true&apiKey=be1c6811746943559cb24c21122b2899', _res => {
         let data = '';
         _res.on('data', (d) => {
             data += d
         })
         _res.on('end', () => {
             const recipe = JSON.parse(data).results[0]
-            res.send({recipe: recipe.title, id: recipe.id})
+            res.send(recipe)
         })
     })
 })
@@ -28,7 +28,7 @@ router.get(['/recipe/:id', '/recipe/:id/'], (req, res) => {
         })
         _info.on('end', () => {
             const response = JSON.parse(info).extendedIngredients.map(i => i.originalName).join(', ')
-            res.send(response)
+            res.send({ingredients: response})
         })
     })
 })

@@ -8,13 +8,19 @@ const AuthorizationCodeDAO = {
       return null;
     }
     const code = createCode(10) + userLogin;
-    AuthorizationCode.create({ authorizationCode: code, user_id: user.id });
+    await AuthorizationCode.create({
+      authorizationCode: code,
+      user_id: user.id,
+    });
     return code;
   },
   findByCode: async (code) => {
-    return AuthorizationCode.findOne({
+    return await AuthorizationCode.findOne({
       where: { authorizationCode: code },
     });
+  },
+  delete: async (code) => {
+    return code.destroy();
   },
 };
 
