@@ -14,7 +14,7 @@ const TokenDAO = {
       { user_id, type: "access_token" },
       "TOKEN_KEY",
       {
-        expiresIn: "2h",
+        expiresIn: "2d",
       }
     );
     const refreshToken = jwt.sign(

@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.set('view engine', 'ejs')
 app.set('views', './routes/templates')
+app.use(express.static('./routes/templates'))
 
 app.use("/user", userRoutes);
 app.use("/oauth", oauthRoutes);

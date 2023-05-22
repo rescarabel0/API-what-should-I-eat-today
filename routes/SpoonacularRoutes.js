@@ -3,13 +3,13 @@ const https = require('node:https');
 const router = express.Router();
 
 router.get(['/recipe', '/recipe/'], (req, res) => {
-    https.get('https://api.spoonacular.com/recipes/complexSearch?number=1&addRecipeInformation=true&apiKey=be1c6811746943559cb24c21122b2899', _res => {
+    https.get('https://api.spoonacular.com/recipes/random?number=1&apiKey=be1c6811746943559cb24c21122b2899', _res => {
         let data = '';
         _res.on('data', (d) => {
             data += d
         })
         _res.on('end', () => {
-            const recipe = JSON.parse(data).results[0]
+            const recipe = JSON.parse(data).recipes[0]
             res.send(recipe)
         })
     })
