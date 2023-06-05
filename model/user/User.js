@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, STRING } = require("sequelize");
 const bcrypt = require("bcrypt");
 const db = require("../../db");
 const Token = require("../oauth/token");
@@ -6,12 +6,25 @@ const AuthorizationCode = require("../oauth/authorizationCode");
 
 const User = db.define("User", {
   login: {
-    type: DataTypes.STRING,
+    type: STRING,
     allowNull: false,
+    unique: true
   },
   password: {
-    type: DataTypes.STRING,
+    type: STRING,
     allowNull: false,
+  },
+  intolerances: {
+    type: STRING,
+    allowNull: true
+  },
+  diets: {
+    type: STRING,
+    allowNull: true
+  },
+  dislikes: {
+    type: STRING,
+    allowNull: true
   }
 });
 

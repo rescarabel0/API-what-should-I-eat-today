@@ -25,7 +25,6 @@
       }
 
       main fieldset {
-
         width: min-content;
         height: min-content;
 
@@ -38,7 +37,8 @@
         display: table-row;
       }
 
-      main fieldset form div.input-group label, main fieldset form div.input-group input {
+      main fieldset form div.input-group label,
+      main fieldset form div.input-group input {
         display: table-cell;
       }
 
@@ -52,7 +52,7 @@
   <body>
     <main>
       <fieldset>
-        <img src="https://i.ibb.co/hM0gsmZ/logo.png" alt="">
+        <img src="https://i.ibb.co/hM0gsmZ/logo.png" alt="" />
         <form
           id="form"
           method="POST"
@@ -60,13 +60,17 @@
         >
           <div class="input-group">
             <label for="login">Login: </label>
-            <input type="text" id="login" name="login" />
+            <input type="text" id="login" name="login" required />
           </div>
           <div class="input-group">
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" required />
           </div>
           <button>Login</button>
+
+          <% if (params.error) { %>
+          <span style="color: red">Usuário/Senha inválido(s)!</span>
+          <% } %>
         </form>
       </fieldset>
     </main>

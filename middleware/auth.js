@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const TokenDAO = require("../dao/TokenDAO");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token =
     req.body.token || req.query.token || req.headers["authorization"];
 
@@ -10,11 +10,11 @@ const verifyToken = (req, res, next) => {
       .status(403)
       .send({ error: "A token is required for authentication" });
   }
-  const foundToken = TokenDAO.findByToken(token);
+  const foundToken = await TokenDAO.findByToken(token);
   if (!foundToken) {
     return res.status(401).send({ error: "Token not found" });
   }
-  req.user = foundToken;
+  req.user = foundToken.user_id;
   return next();
 };
 

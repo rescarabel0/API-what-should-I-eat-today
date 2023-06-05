@@ -1,15 +1,33 @@
 const express = require("express");
 const https = require('node:https');
 const router = express.Router();
+const UserDAO = require('../dao/UserDAO')
 
-router.get(['/recipe', '/recipe/'], (req, res) => {
-    https.get('https://api.spoonacular.com/recipes/random?number=1&apiKey=be1c6811746943559cb24c21122b2899', _res => {
+router.get(['/recipe', '/recipe/'], async (req, res) => {
+    const user = await UserDAO.findById(req.user)
+    const dislikes = user.dislikes;
+    const intolerances = user.intolerances;
+    const diets = user.diets;
+
+    let url = 'https://api.spoonacular.com/recipes/complexSearch?sort=random&number=1&apiKey=be1c6811746943559cb24c21122b2899&type=main course'
+    if (dislikes) {
+        url += `&excludeIngredients=${dislikes}`
+    }
+    if (intolerances) {
+        url += `&intolerances=${intolerances}`
+    }
+    if (diets) {
+        url += `&diet=${diets}`
+    }
+
+    console.log(url)
+    https.get(url, _res => {
         let data = '';
         _res.on('data', (d) => {
             data += d
         })
         _res.on('end', () => {
-            const recipe = JSON.parse(data).recipes[0]
+            const recipe = JSON.parse(data).results[0]
             res.send(recipe)
         })
     })
